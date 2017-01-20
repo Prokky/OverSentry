@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">OverSentry</string>
+    <string name="latest_patches">Latest Patches</string>
+    <string name="btag_hint">Battle Tag</string>
+    <string name="search">Search</string>
+</resources>
