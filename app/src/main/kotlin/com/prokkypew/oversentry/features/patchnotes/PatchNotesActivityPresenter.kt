@@ -4,7 +4,7 @@ import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.prokkypew.oversentry.MainApplication
-import com.prokkypew.oversentry.model.ParserModel
+import com.prokkypew.oversentry.model.Model
 import com.prokkypew.oversentry.model.PatchNote
 import rx.Subscriber
 import rx.subscriptions.CompositeSubscription
@@ -24,7 +24,7 @@ class PatchNotesActivityPresenter : MvpPresenter<PatchNotesActivityView>() {
     @Inject
     lateinit var compositeSubscription: CompositeSubscription
     @Inject
-    lateinit var model: ParserModel
+    lateinit var model: Model
 
     fun loadPatchNotes() {
         compositeSubscription.add(model.getPatchNotes().subscribe(object : Subscriber<ArrayList<PatchNote>>() {
@@ -36,6 +36,7 @@ class PatchNotesActivityPresenter : MvpPresenter<PatchNotesActivityView>() {
             }
 
             override fun onError(e: Throwable?) {
+                e?.printStackTrace()
                 viewState.showError("Failed to load patch notes")
             }
         }))

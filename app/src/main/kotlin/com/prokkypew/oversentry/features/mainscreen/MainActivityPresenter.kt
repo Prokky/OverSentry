@@ -4,7 +4,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.prokkypew.oversentry.MainApplication
 import com.prokkypew.oversentry.model.BattleNetProfile
-import com.prokkypew.oversentry.model.ParserModel
+import com.prokkypew.oversentry.model.Model
 import io.realm.Realm
 import io.realm.RealmResults
 import io.realm.Sort
@@ -22,8 +22,9 @@ class MainActivityPresenter : MvpPresenter<MainActivityView>() {
     @Inject
     lateinit var compositeSubscription: CompositeSubscription
     @Inject
-    lateinit var model: ParserModel
-    var realm: Realm = Realm.getDefaultInstance()
+    lateinit var model: Model
+    @Inject
+    lateinit var realm: Realm
 
     init {
         MainApplication().getComponent().inject(this)

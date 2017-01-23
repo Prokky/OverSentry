@@ -1,5 +1,7 @@
-package com.prokkypew.oversentry.model
+package com.prokkypew.oversentry.model.parser
 
+import com.prokkypew.oversentry.model.BattleNetProfile
+import com.prokkypew.oversentry.model.PatchNote
 import org.jsoup.HttpStatusException
 import org.jsoup.Jsoup
 import java.util.*
@@ -7,7 +9,7 @@ import java.util.*
 /**
  * Created by alexander.roman on 16.01.2017.
  */
-class BlizzParser {
+class BlizzParserImpl : BlizzParser {
     companion object {
         val BATTLE_NET_URL = "https://us.battle.net"
         val PATCH_NOTES_BASE_URL = BATTLE_NET_URL + "/forums/en/overwatch/21446648/"
@@ -16,7 +18,7 @@ class BlizzParser {
         var STAT_URL = "https://playoverwatch.com/en-us/career/"
     }
 
-    fun parsePatchNotes(url: String): ArrayList<PatchNote> {
+    override fun parsePatchNotes(url: String): ArrayList<PatchNote> {
         val list = ArrayList<PatchNote>()
         val doc = Jsoup.connect(url).get()
         val posts = doc.select(".ForumTopic-details")
@@ -40,7 +42,7 @@ class BlizzParser {
         return list
     }
 
-    fun parsePlayerStats(btag: String, platform: String, region: String): BattleNetProfile? {
+    override fun parsePlayerStats(btag: String, platform: String, region: String): BattleNetProfile? {
         var url = STAT_URL
         if (platform.equals("pc", true))
             url += "pc/" + region.toLowerCase() + "/" + btag.replace("#", "-")

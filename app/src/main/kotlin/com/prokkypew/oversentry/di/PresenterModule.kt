@@ -1,9 +1,10 @@
 package com.prokkypew.oversentry.di
 
-import com.prokkypew.oversentry.model.ParserModel
-import com.prokkypew.oversentry.model.ParserModelImpl
+import com.prokkypew.oversentry.model.Model
+import com.prokkypew.oversentry.model.ModelImpl
 import dagger.Module
 import dagger.Provides
+import io.realm.Realm
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Singleton
 
@@ -16,8 +17,8 @@ class PresenterModule {
 
     @Provides
     @Singleton
-    internal fun providesParserModel(): ParserModel {
-        return ParserModelImpl()
+    internal fun provideParserModel(): Model {
+        return ModelImpl()
     }
 
     @Provides
@@ -25,4 +26,8 @@ class PresenterModule {
         return CompositeSubscription()
     }
 
+    @Provides
+    internal fun provideRealm(): Realm {
+        return Realm.getDefaultInstance()
+    }
 }
