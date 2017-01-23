@@ -4,7 +4,7 @@ import android.util.Log
 import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.prokkypew.oversentry.MainApplication
-import com.prokkypew.oversentry.model.Model
+import com.prokkypew.oversentry.model.BlizzParser
 import com.prokkypew.oversentry.model.PatchNote
 import rx.Subscriber
 import rx.subscriptions.CompositeSubscription
@@ -24,10 +24,10 @@ class PatchNotesActivityPresenter : MvpPresenter<PatchNotesActivityView>() {
     @Inject
     lateinit var compositeSubscription: CompositeSubscription
     @Inject
-    lateinit var model: Model
+    lateinit var parser: BlizzParser
 
     fun loadPatchNotes() {
-        compositeSubscription.add(model.getPatchNotes().subscribe(object : Subscriber<ArrayList<PatchNote>>() {
+        compositeSubscription.add(parser.getPatchNotes().subscribe(object : Subscriber<ArrayList<PatchNote>>() {
             override fun onNext(t: ArrayList<PatchNote>?) {
                 viewState.patchNotesLoaded(t!!)
             }

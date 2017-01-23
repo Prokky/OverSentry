@@ -1,9 +1,11 @@
-package com.prokkypew.oversentry.model.parser
+package com.prokkypew.oversentry.model
 
-import com.prokkypew.oversentry.model.BattleNetProfile
-import com.prokkypew.oversentry.model.PatchNote
 import org.jsoup.HttpStatusException
 import org.jsoup.Jsoup
+import rx.Observable
+import rx.Subscriber
+import rx.android.schedulers.AndroidSchedulers
+import rx.schedulers.Schedulers
 import java.util.*
 
 /**
@@ -18,7 +20,7 @@ class BlizzParserImpl : BlizzParser {
         var STAT_URL = "https://playoverwatch.com/en-us/career/"
     }
 
-    override fun parsePatchNotes(url: String): ArrayList<PatchNote> {
+    internal fun parsePatchNotes(url: String): ArrayList<PatchNote> {
         val list = ArrayList<PatchNote>()
         val doc = Jsoup.connect(url).get()
         val posts = doc.select(".ForumTopic-details")
@@ -42,7 +44,7 @@ class BlizzParserImpl : BlizzParser {
         return list
     }
 
-    override fun parsePlayerStats(btag: String, platform: String, region: String): BattleNetProfile? {
+    internal fun parsePlayerStats(btag: String, platform: String, region: String): BattleNetProfile? {
         var url = STAT_URL
         if (platform.equals("pc", true))
             url += "pc/" + region.toLowerCase() + "/" + btag.replace("#", "-")
@@ -62,5 +64,36 @@ class BlizzParserImpl : BlizzParser {
         } catch (e: HttpStatusException) {
             return null
         }
+    }
+
+    override fun getPatchNotes(): Observable<ArrayList<PatchNote>> {
+        val observable = Observable.create(object : Observable.OnSubscribe<ArrayList<PatchNote>> {
+            override fun call(t: Subscriber<in ArrayList<PatchNote>>?) {
+                val list = parsePatchNotes(PATCH_NOTES_BASE_URL)
+                t?.onNext(list)
+                t?.onCompleted()
+            }
+        })
+
+        return observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getPlayer(nickname: String, platform: String, region: String): Observable<BattleNetProfile> {
+        val observable = Observable.create(object : Observable.OnSubscribe<BattleNetProfile> {
+            override fun call(t: Subscriber<in BattleNetProfile>?) {
+                val profile = parsePlayerStats(nickname, platform, region)
+                if (profile == null)
+                    t?.onError(RuntimeException())
+                else
+                    t?.onNext(profile)
+                t?.onCompleted()
+            }
+        })
+
+        return observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 }

@@ -25,7 +25,6 @@ import com.prokkypew.oversentry.features.playerstats.PlayerStatsActivity
 import com.prokkypew.oversentry.model.BattleNetProfile
 import com.prokkypew.oversentry.utils.SearchDiffCallback
 import com.prokkypew.oversentry.utils.safeSubList
-import io.realm.RealmResults
 import org.jetbrains.anko.*
 import java.util.*
 
@@ -78,7 +77,7 @@ class MainActivity : MvpActivity(), MainActivityView, View.OnClickListener {
         toast(errorText)
     }
 
-    override fun playerFound(results: RealmResults<BattleNetProfile>) {
+    override fun playerFound(results: List<BattleNetProfile>) {
         searchProgressBar.visibility = View.INVISIBLE
 
         val diffCallback = SearchDiffCallback(searches, results)

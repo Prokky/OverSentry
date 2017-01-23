@@ -1,7 +1,7 @@
 package com.prokkypew.oversentry.di
 
-import com.prokkypew.oversentry.model.Model
-import com.prokkypew.oversentry.model.ModelImpl
+import com.prokkypew.oversentry.model.BlizzParser
+import com.prokkypew.oversentry.model.BlizzParserImpl
 import dagger.Module
 import dagger.Provides
 import io.realm.Realm
@@ -17,8 +17,8 @@ class PresenterModule {
 
     @Provides
     @Singleton
-    internal fun provideParserModel(): Model {
-        return ModelImpl()
+    internal fun provideParser(): BlizzParser {
+        return BlizzParserImpl()
     }
 
     @Provides

@@ -4,7 +4,7 @@ import com.arellomobile.mvp.InjectViewState
 import com.arellomobile.mvp.MvpPresenter
 import com.prokkypew.oversentry.MainApplication
 import com.prokkypew.oversentry.model.BattleNetProfile
-import com.prokkypew.oversentry.model.Model
+import com.prokkypew.oversentry.model.BlizzParser
 import io.realm.Realm
 import io.realm.RealmResults
 import io.realm.Sort
@@ -22,7 +22,7 @@ class MainActivityPresenter : MvpPresenter<MainActivityView>() {
     @Inject
     lateinit var compositeSubscription: CompositeSubscription
     @Inject
-    lateinit var model: Model
+    lateinit var parser: BlizzParser
     @Inject
     lateinit var realm: Realm
 
@@ -31,7 +31,7 @@ class MainActivityPresenter : MvpPresenter<MainActivityView>() {
     }
 
     fun searchPlayer(nickname: String, platform: String, region: String) {
-        compositeSubscription.add(model.getPlayer(nickname, platform, region).subscribe(object : Subscriber<BattleNetProfile>() {
+        compositeSubscription.add(parser.getPlayer(nickname, platform, region).subscribe(object : Subscriber<BattleNetProfile>() {
             override fun onNext(p: BattleNetProfile?) {
                 if (p == null)
                     viewState.showError("Not found")
