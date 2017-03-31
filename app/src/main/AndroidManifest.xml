@@ -27,6 +27,10 @@
         <activity
             android:name=".features.playerstats.PlayerStatsActivity"
             android:screenOrientation="portrait" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="751e352b243396a37c94890a8c801c8bac7138f5" />
     </application>
 
 </manifest>

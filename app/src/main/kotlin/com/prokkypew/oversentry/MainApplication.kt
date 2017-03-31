@@ -1,9 +1,11 @@
 package com.prokkypew.oversentry
 
 import android.app.Application
+import com.crashlytics.android.Crashlytics
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.prokkypew.oversentry.di.AppComponent
 import com.prokkypew.oversentry.di.DaggerAppComponent
+import io.fabric.sdk.android.Fabric
 import io.realm.Realm
 
 
@@ -21,6 +23,7 @@ open class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        Fabric.with(this, Crashlytics())
         Fresco.initialize(this)
         initRealm()
         appComponent = buildComponent()
